@@ -1,24 +1,10 @@
-import React from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, ScrollView, StyleSheet, Alert } from 'react-native';
+import { getTimelineByUser } from '../../services/Timeline/';
+import { format, parseISO } from 'date-fns';
 
-const Schedule = () => {
-    const data = [
-        { time: '15/11 08:00', activity: 'Pesca Gauderia', type: "Prova", local: 'Açude' },
-        { time: '09:00', activity: 'Artilharia', type: "Prova", local: 'Campo' },
-        { time: '12:00', activity: 'Ja podih ao msosa?', type: "Obgtorio", local: 'Refeitorio' },
-        { time: '15:00', activity: 'nao podih mais mussa', type: "Obgtorio", local: 'Biblioteca' },
-        { time: '15:00', activity: 'nao podih mais mussa', type: "Obgtorio", local: 'Biblioteca' },
-        { time: '15:00', activity: 'nao podih mais mussa', type: "Obgtorio", local: 'Biblioteca' },
-        { time: '15:00', activity: 'nao podih mais mussa', type: "Obgtorio", local: 'Biblioteca' },
-        { time: '15:00', activity: 'nao podih mais mussa', type: "Obgtorio", local: 'Biblioteca' },
-        { time: '15:00', activity: 'nao podih mais mussa', type: "Obgtorio", local: 'Biblioteca' },
-        { time: '15:00', activity: 'nao podih mais mussa', type: "Obgtorio", local: 'Biblioteca' },
-        { time: '15:00', activity: 'nao podih mais mussa', type: "Obgtorio", local: 'Biblioteca' },
-        { time: '15:00', activity: 'nao podih mais mussa', type: "Obgtorio", local: 'Biblioteca' },
-        { time: '15:00', activity: 'nao podih mais mussa', type: "Obgtorio", local: 'Biblioteca' },
-        { time: '15:00', activity: 'nao podih mais mussa', type: "Obgtorio", local: 'Biblioteca' },
-        { time: '15:00', activity: 'nao podih mais mussa', type: "Obgtorio", local: 'Biblioteca' },
-    ];
+const Schedule = ({ id }) => {
+    const [data, setTimeline] = useState([]);
 
     const getRowStyle = (index, total) => {
         const percentage = (index / (total - 1)) * 100;
@@ -26,6 +12,26 @@ const Schedule = () => {
             backgroundColor: `rgba(255, ${255 - (percentage * 0.6)}, ${255 - (percentage * 0.6)}, 1)`,
         };
     };
+
+    useEffect(() => {
+        const fetchTimeline = async () => {
+            try {
+                const fetchedTimeline = await getTimelineByUser(id);
+                console.log('Fetched Timeline Data:', fetchedTimeline);
+                if (Array.isArray(fetchedTimeline)) {
+                    setTimeline(fetchedTimeline);
+                } else {
+                    console.error('Fetched data is not an array:', fetchedTimeline);
+                    Alert.alert('Error', 'Fetched data is not in the expected format');
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                Alert.alert('Error', 'Failed to fetch timeline');
+            }
+        };
+
+        fetchTimeline();
+    }, [id]);
 
     return (
         <ScrollView style={styles.container}>
@@ -38,8 +44,12 @@ const Schedule = () => {
                 </View>
                 {data.map((item, index) => (
                     <View key={index} style={[styles.tableRow, getRowStyle(index, data.length)]}>
-                        <Text style={styles.cell}>{item.time}</Text>
-                        <Text style={styles.cell}>{item.activity}</Text>
+                        <View style={styles.dateContainer}>
+                            <Text style={styles.label}>{"às ou até às"}</Text>
+                            <Text style={styles.date}>{`${format(parseISO(item.date), 'dd/MM')}`}</Text>
+                            <Text style={styles.date}>{`${format(parseISO(item.date), 'HH:mm')}`}</Text>
+                        </View>
+                        <Text style={styles.cell}>{item.name}</Text>
                         <Text style={styles.cell}>{item.type}</Text>
                         <Text style={styles.cell}>{item.local}</Text>
                     </View>
@@ -87,6 +97,12 @@ const styles = StyleSheet.create({
         color: '#333',
         textAlign: 'left',
     },
+    dateContainer: {
+        flex: 1, // Utilize o mesmo espaço que outras células
+        flexDirection: 'column', // Alinhar verticalmente
+        justifyContent: 'flex-start', // Começar do topo
+        padding: 10
+    },
     tableFooter: {
         backgroundColor: '#ea2a26',
         padding: 12,
@@ -95,6 +111,14 @@ const styles = StyleSheet.create({
     footerText: {
         color: '#fff',
         fontWeight: 'bold',
+    },
+    label: {
+        fontWeight: 'bold',
+        color: '#333',
+    },
+    date: {
+        color: '#666',
+        fontSize: 14,
     },
 });
 

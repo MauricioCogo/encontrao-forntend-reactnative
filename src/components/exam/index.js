@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, LayoutAnimation, Platform, UIManager, Alert } from 'react-native';
 import Button from '../button/index';
 import { format, parseISO } from 'date-fns';
+import { useNavigation } from '@react-navigation/native';
 
 // Ativar animações de layout no Android
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -12,9 +13,10 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
     }
 }
 
-const ExamCard = ({ name, modality, description, date, commission, local }) => {
+const ExamCard = ({ id, name, modality, description, date, commission, local }) => {
     const [expanded, setExpanded] = useState(false);
     const formattedDate = format(parseISO(date), 'dd/MM/yyyy HH:mm');
+    const navigation = useNavigation(); // Obter o objeto de navegação
 
     const handleToggle = () => {
         // Ativa uma animação de layout suave
@@ -22,8 +24,9 @@ const ExamCard = ({ name, modality, description, date, commission, local }) => {
         setExpanded(prevExpanded => !prevExpanded);
     };
 
-    const alerta = (title, text) => {
-        Alert.alert(title, text);
+    const alerta = () => {
+        console.warn("SDFSD", id);
+        navigation.navigate('Participants', { competitionId: id })
     }
 
     return (
@@ -39,7 +42,7 @@ const ExamCard = ({ name, modality, description, date, commission, local }) => {
                     <Text style={styles.detail}>{description || "Sem descrição"}</Text>
                     <TouchableOpacity style={styles.button}>
                         <Button
-                            onClick={() => alerta("Error!", "Não possui participantes para esta prova!")} // Corrigido
+                            onClick={() => alerta()} // Corrigido
                             label={"Participantes"}
                             styles={{
                                 alignItems: 'center',

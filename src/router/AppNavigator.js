@@ -1,4 +1,3 @@
-// src/navigation/AppNavigator.js
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import ProfileView from '../screens/ProfileView';
@@ -9,8 +8,7 @@ const Stack = createStackNavigator();
 function AppNavigator() {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="ProfileView" component={ProfileView} />
-            <Stack.Screen name="Login" component={LoginView} /> {/* Add your Login screen here */}
+            <Stack.Screen name="Login" component={LoginView} />
         </Stack.Navigator>
     );
 }

@@ -1,16 +1,14 @@
 // src/screens/ProfileView.js
-import React from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, Alert, View, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native';
 import ProfileCard from '../../components/profile/index';
 import Timeline from '../../components/timeline/index';
 import Background from '../../components/background';
-import { useEstudante } from '../../context/Student';
-import { useNavigation } from '@react-navigation/native';
 import RandomMessage from '../../components/message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function ProfileView() {
-    const { estudante, logout } = useEstudante();
-    const navigation = useNavigation();
+function ProfileView({ setIsLoggedIn }) { // Receba o setIsLoggedIn via props
+    const [estudante, setEstudante] = useState(null);
 
     const handleLogout = () => {
         Alert.alert(
@@ -23,28 +21,48 @@ function ProfileView() {
                 },
                 {
                     text: "Sair",
-                    onPress: () => {
-                        logout();
+                    onPress: async () => {
+                        // Remova os dados do AsyncStorage
+                        await AsyncStorage.removeItem('@user_data');
+                        await AsyncStorage.setItem('@user_logged_in', 'false');                        // Defina o estado de login como false para voltar à tela de login
+                        setEstudante(null);
+                        setIsLoggedIn(false);
                     }
                 }
             ]
         );
     };
 
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const storedUserData = await AsyncStorage.getItem('@user_data');
+                if (storedUserData) {
+                    const parsedUserData = JSON.parse(storedUserData);
+                    setEstudante(parsedUserData);
+                }
+            } catch (e) {
+                console.error('Erro ao recuperar dados do usuário', e);
+            }
+        };
+
+        fetchUserData();
+    }, []);
+
     if (!estudante) {
-        return <RandomMessage />
+        return <RandomMessage />;
     }
 
     return (
         <Background>
             <ScrollView contentContainerStyle={styles.container}>
                 <ProfileCard
+                    id={estudante.id}
                     name={estudante.name}
-                    campus={`IFFar SVS`}
-                    avatar="https://i.natgeofe.com/n/82fddbcc-4cbb-4373-bf72-dbc30068be60/drill-monkey-01.jpg?w=2560&h=1920"
-                    evaluator={estudante.isEvaluator}
+                    campus={estudante.campus}
+                    avatar={estudante.avatar}
                 />
-                <Timeline />
+                <Timeline id={estudante.id} />
                 <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
                     <Text style={styles.logoutButtonText}>Sair</Text>
                 </TouchableOpacity>
@@ -58,12 +76,6 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         padding: 16,
     },
-    exit: {
-        flexGrow: 1,
-        padding: 16,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
     logoutButton: {
         marginTop: 30,
         backgroundColor: "#ea2a26",
@@ -73,22 +85,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    image: {
-        width: 300,
-        height: 300,
-        resizeMode: 'contain',
-    },
     logoutButtonText: {
         color: "#fff",
         fontSize: 16,
         textTransform: 'none',
-    },
-    messageText: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#333',
-        marginBottom: 20,
-        textAlign: 'center',
     },
 });
 

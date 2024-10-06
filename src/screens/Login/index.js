@@ -1,23 +1,38 @@
-// src/screens/LoginView.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native';
-import { useEstudante } from '../../context/Student';
+import { useUser } from '../../context/Student'; // Importe o contexto
 import imgTrempe from '../../../assets/Trempe.png';
 import imgIffar from '../../../assets/iffarsvs.png';
 import Background from "../../components/background";
 import { getUser } from "../../services/Users/index";
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Certifique-se de importar AsyncStorage
 
 const LoginView = ({ setIsLoggedIn }) => {
     const [cpf, setCpf] = useState("");
     const [password, setPassword] = useState("");
-    const { login } = useEstudante();
+    const { saveUserData } = useUser(); // Use o contexto para salvar os dados do usuário
+    const [estudante, setEstudante] = useState(null);
 
-    const handleLogin = () => {
-        const dataUser = getUser(cpf);
+    // Função para buscar dados do AsyncStorage
+    const fetchUserData = async () => {
+        try {
+            const storedUserData = await AsyncStorage.getItem('@user_data');
+            if (storedUserData) {
+                const parsedUserData = JSON.parse(storedUserData);
+                setEstudante(parsedUserData);
+            }
+        } catch (e) {
+            console.error('Erro ao recuperar dados do usuário', e);
+        }
+    };
 
-        if (dataUser => dataUser.cpf === cpf && dataUser.password === password) {
-            login(dataUser);
-            setIsLoggedIn(true);
+    const handleLogin = async () => {
+        const dataUser = await getUser(cpf);
+
+        if (dataUser && dataUser.cpf === cpf && dataUser.password === password) {
+            saveUserData(dataUser); // Salva os dados do usuário no AsyncStorage
+            setIsLoggedIn(true); // Atualiza o estado de login
+            await AsyncStorage.setItem('@user_logged_in', 'true'); // Verifique se isso está sendo chamado corretamente
         } else {
             Alert.alert("Erro", "CPF ou senha incorretos");
         }
@@ -27,10 +42,21 @@ const LoginView = ({ setIsLoggedIn }) => {
         <Background>
             <View style={styles.container}>
                 <Image source={imgTrempe} style={styles.logo} resizeMode="contain" />
-                <Text style={[styles.text, styles.title]}>Bem vindo ao 30º encontrão!</Text>
+                <Text style={[styles.text, styles.title]}>Bem-vindo ao 30º encontrão!</Text>
                 <Text style={[styles.text, styles.subtitle]}>Realizar login</Text>
-                <TextInput placeholder="CPF ou Matricula" value={cpf} onChangeText={setCpf} style={styles.input} />
-                <TextInput placeholder="Sua Senha" secureTextEntry={true} value={password} onChangeText={setPassword} style={styles.input} />
+                <TextInput
+                    placeholder="CPF ou Matrícula"
+                    value={cpf}
+                    onChangeText={setCpf}
+                    style={styles.input}
+                />
+                <TextInput
+                    placeholder="Sua Senha"
+                    secureTextEntry={true} z
+                    value={password}
+                    onChangeText={setPassword}
+                    style={styles.input}
+                />
                 <Text style={styles.helpText}>Como obter minha senha?</Text>
                 <TouchableOpacity style={styles.button} onPress={handleLogin}>
                     <Text style={styles.buttonText}>Entrar</Text>
@@ -100,7 +126,31 @@ const styles = StyleSheet.create({
         height: undefined,
         aspectRatio: 1,
         marginTop: 50,
-    }
+    },
+    checkboxContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 10,
+    },
+    checkbox: {
+        width: 20,
+        height: 20,
+        borderWidth: 1,
+        borderColor: '#aaa',
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 10,
+    },
+    checkboxChecked: {
+        backgroundColor: '#ea2a26', // Cor de fundo quando marcada
+    },
+    checkboxText: {
+        color: '#fff', // Cor do texto quando marcada
+    },
+    checkboxLabel: {
+        fontSize: 16,
+    },
 });
 
 export default LoginView;

@@ -1,8 +1,8 @@
 import { get, put, del } from '../index'
 
-const getCompetition = async (id) => {
+const getTimeline = async (id) => {
     try {
-        const body = await get(`competitions/${id}`)
+        const body = await get(`timeline/${id}`)
 
         if (!body.success) {
             throw body.message
@@ -18,11 +18,25 @@ const getCompetition = async (id) => {
     }
 }
 
-const getCompetitions = async () => {
-    try {
-    const body = await get(`competitions`);
-        console.warn("teste");
+const getTimelineByUser = async (id) => {
+    console.warn("ID: ", id);
 
+    try {
+        const body = await get(`timeline/user/${id}`)
+
+        return body
+    } catch (e) {
+        return {
+            success: false,
+            message: 'Erro: ' + e,
+            response: {},
+        }
+    }
+}
+
+const getTimelines = async () => {
+    try {
+        const body = await get(`timeline`);
         return body;
     } catch (e) {
         return {
@@ -33,25 +47,9 @@ const getCompetitions = async () => {
     }
 }
 
-const getCompetitionsCommission = async () => {
+const deleteTimeline = async (id) => {
     try {
-        const body = await get(`competitions/commission`);
-        console.warn("teste");
-
-        return body;
-    } catch (e) {
-        return {
-            success: false,
-            message: 'Erro: ' + e,
-            response: {},
-        };
-    }
-}
-
-
-const delCtecompetition = async (id) => {
-    try {
-        const body = await del(`competitions/${id}`)
+        const body = await del(`timeline/${id}`)
 
         if (!body.success) {
             throw body
@@ -63,4 +61,4 @@ const delCtecompetition = async (id) => {
     }
 }
 
-export { getCompetition, getCompetitions, delCtecompetition, getCompetitionsCommission }
+export { getTimeline, getTimelineByUser, getTimelines, deleteTimeline }

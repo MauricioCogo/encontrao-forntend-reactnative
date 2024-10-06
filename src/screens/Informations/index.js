@@ -40,46 +40,46 @@ function InfoView() {
             case 'iffar-svs':
                 return (
                     <View style={styles.container}>
+                        <IFFarSVS />
                         <TouchableOpacity style={styles.button} onPress={() => handlePress('home')}>
                             <Text style={styles.buttonText}>Voltar para Início</Text>
                         </TouchableOpacity>
-                        <IFFarSVS />
                     </View>
                 );
             case 'institutes':
                 return (
                     <View style={styles.container}>
+                        <InstitutesView />
                         <TouchableOpacity style={styles.button} onPress={() => handlePress('home')}>
                             <Text style={styles.buttonText}>Voltar para Início</Text>
                         </TouchableOpacity>
-                        <InstitutesView />
                     </View>
                 );
             case 'encontrão':
                 return (
                     <View style={styles.container}>
+                        <EncontrãoView />
                         <TouchableOpacity style={styles.button} onPress={() => handlePress('home')}>
                             <Text style={styles.buttonText}>Voltar para Início</Text>
                         </TouchableOpacity>
-                        <EncontrãoView />
                     </View>
                 );
             case 'ntg-trempe':
                 return (
                     <View style={styles.container}>
+                        <TrempreView />
                         <TouchableOpacity style={styles.button} onPress={() => handlePress('home')}>
                             <Text style={styles.buttonText}>Voltar para Início</Text>
                         </TouchableOpacity>
-                        <TrempreView />
                     </View>
                 );
             case 'developers':
                 return (
                     <View style={styles.container}>
+                        <DevelopersView />
                         <TouchableOpacity style={styles.button} onPress={() => handlePress('home')}>
                             <Text style={styles.buttonText}>Voltar para Início</Text>
                         </TouchableOpacity>
-                        <DevelopersView />
                     </View>
                 );
             default:
@@ -100,7 +100,9 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'space-evenly',
         alignItems: 'center',
-        padding: 20,
+        paddingHorizontal: 20,  // Ajuste horizontal
+        paddingVertical: 10,    // Ajuste vertical
+        marginVertical: 10,     // Espaçamento externo entre os elementos
     },
     button: {
         backgroundColor: "#ff7470",
@@ -109,15 +111,17 @@ const styles = StyleSheet.create({
         width: 258,
         height: 46,
         borderRadius: 20,
-        marginBottom: 75,
         justifyContent: 'center',
         alignItems: 'center',
+        marginVertical: 10,     // Espaçamento entre botões
     },
     buttonText: {
         fontSize: 16,
         color: "#000",
         textTransform: 'none',
+        paddingHorizontal: 5,   // Margem interna ao redor do texto
     },
 });
+
 
 export default InfoView;

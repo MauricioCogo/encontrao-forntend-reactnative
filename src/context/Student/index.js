@@ -1,24 +1,51 @@
-// src/context/EstudanteContext.js
-import React, { createContext, useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const EstudanteContext = createContext();
+export const UserContext = React.createContext();
 
-export function EstudanteProvider({ children }) {
-    const [estudante, setEstudante] = useState(null); // Armazena o estado do usuário
+export const UserProvider = ({ children }) => {
+    const [userData, setUserData] = useState(null);
 
-    const login = (userData) => {
-        setEstudante(userData); // Atualiza o estado com os dados do usuário
+    const saveUserData = async (data) => {
+        try {
+            await AsyncStorage.setItem('@user_data', JSON.stringify(data));
+            setUserData(data);
+        } catch (error) {
+            console.error('Erro ao salvar dados do usuário', error);
+        }
     };
 
-    const logout = () => {
-        setEstudante(null); // Limpa os dados do usuário
+    const loadUserData = async () => {
+        try {
+            const storedUserData = await AsyncStorage.getItem('@user_data');
+            if (storedUserData) {
+                setUserData(JSON.parse(storedUserData));
+            }
+        } catch (error) {
+            console.error('Erro ao carregar dados do usuário', error);
+        }
     };
+
+    const clearUserData = async () => {
+        try {
+            await AsyncStorage.removeItem('@user_data');
+            setUserData(null);
+        } catch (error) {
+            console.error('Erro ao remover dados do usuário', error);
+        }
+    };
+
+    useEffect(() => {
+        loadUserData(); // Carrega os dados do usuário ao inicializar o contexto
+    }, []);
 
     return (
-        <EstudanteContext.Provider value={{ estudante, login, logout }}>
+        <UserContext.Provider value={{ userData, saveUserData, clearUserData }}>
             {children}
-        </EstudanteContext.Provider>
+        </UserContext.Provider>
     );
-}
+};
 
-export const useEstudante = () => useContext(EstudanteContext);
+export const useUser = () => {
+    return useContext(UserContext);
+};

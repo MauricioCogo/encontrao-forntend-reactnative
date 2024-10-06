@@ -55,52 +55,55 @@ function DevelopersView() {
 const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
-        padding: 20,
+        paddingHorizontal: 10,  // Ajuste horizontal
+        paddingVertical: 10,    // Ajuste vertical
+        marginVertical: 10,     // Espaçamento externo
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginBottom: 20,
+        marginBottom: 20,       // Espaçamento inferior do título
     },
     developerContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: 20,       // Espaçamento entre os blocos de desenvolvedores
+        padding: 10,            // Ajuste de padding interno para espaçamento uniforme
     },
     photo: {
         width: 60,
         height: 60,
         borderRadius: 30,
-        marginRight: 15,
+        marginRight: 15,        // Espaçamento à direita da imagem
     },
     info: {
         flex: 1,
+        paddingLeft: 5,         // Espaçamento interno à esquerda do bloco de informações
     },
     name: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#343a40',
+        marginBottom: 5,        // Espaçamento inferior do nome
     },
     role: {
         fontSize: 16,
-        color: '#495057',
+        marginBottom: 5,        // Espaçamento inferior do cargo
     },
     email: {
         fontSize: 14,
-        color: '#6c757d',
+        color: '#495057',
     },
     subtitle: {
         fontSize: 18,
         fontWeight: 'bold',
-        marginTop: 20,
-        marginBottom: 10,
-        color: '#343a40',
+        marginVertical: 15,     // Espaçamento entre subtítulos
     },
     text: {
         fontSize: 16,
-        color: '#495057',
+        marginBottom: 10,       // Espaçamento entre parágrafos de texto
     },
 });
+
 
 export default DevelopersView;

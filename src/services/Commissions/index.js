@@ -1,8 +1,8 @@
-import { get, put, del } from '../index'
+import { get, patch, del } from '../index'
 
-const getCompetition = async (id) => {
+const getCommission = async (id) => {
     try {
-        const body = await get(`competitions/${id}`)
+        const body = await get(`commissions/${id}`)
 
         if (!body.success) {
             throw body.message
@@ -18,9 +18,9 @@ const getCompetition = async (id) => {
     }
 }
 
-const getCompetitions = async () => {
+const getCommissions = async () => {
     try {
-    const body = await get(`competitions`);
+        const body = await get(`commissions`);
         console.warn("teste");
 
         return body;
@@ -33,11 +33,9 @@ const getCompetitions = async () => {
     }
 }
 
-const getCompetitionsCommission = async () => {
+const getGrade = async (id) => {
     try {
-        const body = await get(`competitions/commission`);
-        console.warn("teste");
-
+        const body = await get(`commissions/byteam/${id}`);
         return body;
     } catch (e) {
         return {
@@ -48,10 +46,22 @@ const getCompetitionsCommission = async () => {
     }
 }
 
+const setGrade = async (id) => {
+    try {
+        const body = await patch(`commissions/byteam/${id}`);
+        return body;
+    } catch (e) {
+        return {
+            success: false,
+            message: 'Erro: ' + e,
+            response: {},
+        };
+    }
+}
 
 const delCtecompetition = async (id) => {
     try {
-        const body = await del(`competitions/${id}`)
+        const body = await del(`commissions/${id}`)
 
         if (!body.success) {
             throw body
@@ -63,4 +73,4 @@ const delCtecompetition = async (id) => {
     }
 }
 
-export { getCompetition, getCompetitions, delCtecompetition, getCompetitionsCommission }
+export { getCommission, getCommissions, delCtecompetition, getGrade, setGrade }

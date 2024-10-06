@@ -72,32 +72,37 @@ function IFFarSVS() {
 const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
-        padding: 20,
+        paddingHorizontal: 20,  // Ajuste horizontal
+        paddingVertical: 10,    // Ajuste vertical
+        marginVertical: 10,     // Espaçamento externo entre elementos principais
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginBottom: 20,
+        marginBottom: 20,       // Espaçamento inferior
+        paddingHorizontal: 10,  // Ajuste para dar mais respiro ao título
     },
     image: {
         width: '100%',
         height: 150,
         borderRadius: 10,
-        marginBottom: 20,
+        marginBottom: 20,       // Espaçamento inferior da imagem
     },
     subtitle: {
         fontSize: 18,
         fontWeight: 'bold',
         marginTop: 20,
-        marginBottom: 10,
+        marginBottom: 10,       // Ajuste de margem superior e inferior
         color: '#343a40',
     },
     text: {
         fontSize: 16,
-        marginBottom: 10,
+        marginBottom: 10,       // Ajuste de espaçamento inferior entre parágrafos
+        paddingHorizontal: 5,   // Espaçamento interno para melhor leitura
         color: '#495057',
     },
 });
+
 
 export default IFFarSVS;

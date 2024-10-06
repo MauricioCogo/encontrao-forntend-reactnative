@@ -1,6 +1,7 @@
 // src/screens/LoginView.js
 import React, { useEffect, useRef, useState } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View, Image } from 'react-native';
+
 import MapView, { Marker } from 'react-native-maps';
 import { requestForegroundPermissionsAsync, getCurrentPositionAsync } from 'expo-location';
 import { getPoints } from '../../services/Points'; // Altere para o caminho correto
@@ -108,7 +109,13 @@ const MapCard = () => {
                         }}
                         title={point.name}
                         description={point.description}
-                    />
+                    >
+                        <Image
+                            source={{ uri: `http://192.168.1.7:8080/images/view/icon/${point.icon}` }} // URI do ícone
+                            style={{ width: 40, height: 40 }} // Ajuste o tamanho conforme necessário
+                            resizeMode="contain" // Use "contain" para manter a proporção da imagem
+                        />
+                    </Marker>
                 ))}
             </MapView>
         </View>
@@ -126,3 +133,6 @@ const styles = StyleSheet.create({
 });
 
 export default MapCard;
+
+/* 
+*/

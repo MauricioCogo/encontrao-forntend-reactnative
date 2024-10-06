@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, LayoutAnimation, Platform, UIManager } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, LayoutAnimation, Platform, UIManager, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; // Importar useNavigation
 import Button from '../button/index'; // Ajuste o caminho conforme necessário
+import { getParticipants } from '../../services/CompetitionsTeams';
+import CustomCard from '../informations';
+import GradeCard from '../grade';
 
 // Ativar animações de layout no Android
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -12,11 +16,14 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 }
 
 const CommissionCard = ({
-    title = 'Default Title',
-    participants = [],
-    campuses = [],
+    id,
+    name = 'Default Name',
+    date = 'Data não disponível',
+    local = 'Local não disponível',
 }) => {
+    const navigation = useNavigation(); // Obter o objeto de navegação
     const [expanded, setExpanded] = useState(false);
+    const [participants, setParticipants] = useState([]); // Inicialize como um array vazio
 
     const handleToggle = () => {
         // Ativa uma animação de layout suave
@@ -24,30 +31,41 @@ const CommissionCard = ({
         setExpanded(prevExpanded => !prevExpanded);
     };
 
+    useEffect(() => {
+        const fetchedParticipants = async () => {
+            try {
+                const fetchedParticipants = await getParticipants(id); // Busca as competições
+                console.warn("Teste");
+                console.warn(fetchedParticipants); // Log para verificar as competições buscadas
+                setParticipants(fetchedParticipants); // Atualiza o estado com as competições
+            } catch (error) {
+                Alert.alert('Error', 'Failed to fetch competitions');
+            }
+        };
+
+        fetchedParticipants(); // Chama a função para buscar as competições
+    }, []); // Array de dependências
+
     return (
-        <View style={styles.card}>
+        <View style={styles.card} key={id}>
             <TouchableOpacity style={styles.accordion} onPress={handleToggle}>
-                <Text style={styles.title}>{title}</Text>
+                <Text style={styles.title}>{name}</Text>
+                <Text style={styles.date}>{date}</Text>
+                <Text style={styles.local}>{local}</Text>
             </TouchableOpacity>
             {expanded && (
                 <View style={styles.details}>
-                    {participants.map((participant, index) => (
-                        <View key={index} style={styles.participantContainer}>
-                            <TouchableOpacity style={styles.button}>
-                                <Button
-                                    label={<Text style={styles.buttonText}>{participant}</Text>}
-                                    styles={{
-                                        alignItems: 'center',
-                                        backgroundColor: '#ff7470',
-                                        width: 270,
-                                        height: 45,
-                                        borderRadius: 20,
-                                        color: '#000',
-                                    }}
-                                />
-                            </TouchableOpacity>
-                            <Text style={styles.campus}>{campuses[index] || 'Campus desconhecido'}</Text>
-                        </View>
+                    {participants.map((item) => (
+                        <TouchableOpacity
+                            key={item.teamId} // Adicione a chave aqui
+                            onPress={() => navigation.navigate('Grades', { teamId: item.teamId, participants: item.participants, campus: item.campus })} // Navegar para a tela Grades
+                        >
+                            <CustomCard
+                                title={item.campus}
+                                items={item.participants}
+                                pad={10}
+                            />
+                        </TouchableOpacity>
                     ))}
                 </View>
             )}
@@ -70,31 +88,28 @@ const styles = StyleSheet.create({
     },
     accordion: {
         padding: 16,
-        alignItems: 'center', // Centraliza o título horizontalmente
+        alignItems: 'center', // Centraliza o conteúdo horizontalmente
     },
     title: {
         fontSize: 18,
         textAlign: 'center', // Centraliza o texto do título
     },
-    button: {
-        alignItems: 'center',
-        marginTop: 10,
-    },
-    buttonText: {
+    date: {
         fontSize: 14,
-        color: '#fff', // Cor do texto do botão
+        color: '#777',
+        textAlign: 'center',
+    },
+    local: {
+        fontSize: 14,
+        color: '#777',
+        textAlign: 'center',
     },
     details: {
         padding: 16,
         alignItems: 'center', // Centraliza todo o conteúdo dos detalhes
     },
-    participantContainer: {
-        marginBottom: 15,
-        alignItems: 'center',
-    },
-    campus: {
-        fontSize: 12,
-        marginTop: -10,
+    expandedText: {
+        fontSize: 14,
         color: '#555',
     },
 });

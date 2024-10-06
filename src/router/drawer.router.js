@@ -1,16 +1,50 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import React, { useEffect, useState } from 'react';
 import { Image, View } from 'react-native';
-import Footer from './footer.router';  // Certifique-se de que está importando o Footer corretamente
+import Footer from './footer.router';
 import ProfileView from '../screens/Profile';
 import InfoView from '../screens/Informations';
 import RulesView from '../screens/Rules';
 import CommisionView from '../screens/Commission';
 import MenuView from '../screens/Menu';
 import HelpView from '../screens/Help';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Drawer = createDrawerNavigator();
 
 export default function DrawerRoutes() {
+    const [estudante, setEstudante] = useState(null);
+    const [Icon, setIcon] = useState(true);
+
+    // Função para buscar dados do AsyncStorage
+    const fetchUserData = async () => {
+        try {
+            const storedUserData = await AsyncStorage.getItem('@user_data');
+            if (storedUserData) {
+                const parsedUserData = JSON.parse(storedUserData);
+                setEstudante(parsedUserData);
+                setIcon(true);  // Mostra o ícone personalizado se o usuário estiver logado
+            } else {
+                setIcon(false);  // Mostra o ícone padrão se o usuário não estiver logado
+            }
+        } catch (e) {
+            console.error('Erro ao recuperar dados do usuário', e);
+        }
+    };
+
+    useEffect(() => {
+        fetchUserData(); // Busca dados ao carregar o componente
+
+        // Define um intervalo para atualizar os dados periodicamente
+        const intervalId = setInterval(() => {
+            fetchUserData(); // Chama a função para buscar dados
+        }, 5000); // Atualiza a cada 5 segundos (ajuste conforme necessário)
+
+        return () => {
+            clearInterval(intervalId); // Limpa o intervalo ao desmontar o componente
+        };
+    }, []);
+
     return (
         <Drawer.Navigator>
             <Drawer.Screen
@@ -36,14 +70,23 @@ export default function DrawerRoutes() {
                 options={{
                     drawerIcon: ({ color, size }) => (
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Image
-                                source={{ uri: "https://i.natgeofe.com/n/82fddbcc-4cbb-4373-bf72-dbc30068be60/drill-monkey-01.jpg?w=2560&h=1920" }}
-                                style={{ width: 30, height: 30, borderRadius: 12 }}
-                            />
+                            {Icon ? (
+                                <Image
+                                    source={{ uri: `http://192.168.1.7:8080${estudante?.avatar}` }}
+                                    style={{ width: 30, height: 30, borderRadius: 12 }}
+                                    onError={() => setIcon(false)}  // Fallback em caso de erro de carregamento
+                                />
+                            ) : (
+                                <Image
+                                    source={require('../../assets/icon.png')}  // Ícone padrão
+                                    style={{ width: 30, height: 30, borderRadius: 12 }}
+                                />
+                            )}
                         </View>
                     ),
                     drawerLabel: 'Perfil'
-                }} />
+                }}
+            />
             <Drawer.Screen
                 name="information"
                 component={InfoView}
