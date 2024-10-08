@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "EcontraoXXX",
+    "name": "EncontraoXXX",
     "slug": "EcontraoXXX",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/trempe.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -12,16 +12,46 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "AIzaSyBBcvJ28TdKx6wOk3feqWRtKRc17S5c9xk"
+      },
+      "bundleIdentifier": "com.mauriciocogo.EcontraoXXX"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBBcvJ28TdKx6wOk3feqWRtKRc17S5c9xk"
+        }
+      },
+      "package": "com.mauriciocogo.EcontraoXXX"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-font",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "6ab080b7-b5bb-475b-8650-b15f1da34c92"
+      }
     }
   }
 }
