@@ -73,7 +73,7 @@ export default function DrawerRoutes() {
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             {Icon ? (
                                 <Image
-                                    source={{ uri: `http://192.168.1.7:8080${estudante?.avatar}` }}
+                                    source={{ uri: `http://192.168.1.16:8080${estudante?.avatar}` }}
                                     style={{ width: 30, height: 30, borderRadius: 12 }}
                                     onError={() => setIcon(false)}  // Fallback em caso de erro de carregamento
                                 />

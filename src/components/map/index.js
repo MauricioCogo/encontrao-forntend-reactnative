@@ -143,7 +143,7 @@ const MapCard = () => {
                                 description={point.description}
                             >
                                 <Image
-                                    source={{ uri: `http://192.168.1.7:8080/images/view/icon/${point.icon}` }} // URI do ícone
+                                    source={{ uri: `http://192.168.1.16:8080/images/view/icon/${point.icon}` }} // URI do ícone
                                     style={{
                                         width: point.size, // Tamanho personalizado por ponto
                                         height: point.size,

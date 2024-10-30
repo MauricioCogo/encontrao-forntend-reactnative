@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "EncontraoXXX",
-    "slug": "EcontraoXXX",
+    "slug": "econtrao",
     "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/trempe.png",
@@ -19,6 +19,15 @@
       "bundleIdentifier": "com.mauriciocogo.EcontraoXXX"
     },
     "android": {
+      "permissions": [
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "useCleartextTraffic": true,
+      "useNextNotificationsApi": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -28,7 +37,8 @@
           "apiKey": "AIzaSyBBcvJ28TdKx6wOk3feqWRtKRc17S5c9xk"
         }
       },
-      "package": "com.mauriciocogo.EcontraoXXX"
+      "package": "com.mauriciocogo.EcontraoXXX",
+      "usesCleartextTraffic": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -50,8 +60,9 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "6ab080b7-b5bb-475b-8650-b15f1da34c92"
+        "projectId": "c8aed8c6-fc8f-460b-b4c8-f9e892fb43ee"
       }
-    }
+    },
+    "owner": "mauriciocarvalho"
   }
 }

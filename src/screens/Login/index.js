@@ -1,79 +1,96 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native';
-import { useUser } from '../../context/Student'; // Importe o contexto
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import { useUser } from '../../context/Student';
 import imgTrempe from '../../../assets/Trempe.png';
 import imgIffar from '../../../assets/iffarsvs.png';
 import Background from "../../components/background";
 import { getUser } from "../../services/Users/index";
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Certifique-se de importar AsyncStorage
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getUrl } from '../../services';
 
 const LoginView = ({ setIsLoggedIn }) => {
     const [cpf, setCpf] = useState("");
     const [password, setPassword] = useState("");
-    const { saveUserData } = useUser(); // Use o contexto para salvar os dados do usuário
-    const [lembrarLogin, setLembrarLogin] = useState(false); // Novo estado para checkbox
-    const [estudante, setEstudante] = useState(null);
+    const { saveUserData } = useUser();
+    const [lembrarLogin, setLembrarLogin] = useState(false);
+    const [estudante, setEstudante] = useState("");
+    const [isLoading, setIsLoading] = useState(false); // Novo estado para carregar status
 
-    // Função para buscar dados do AsyncStorage
     const fetchUserData = async () => {
         try {
             const storedUserData = await AsyncStorage.getItem('@user_data');
             if (storedUserData) {
                 const parsedUserData = JSON.parse(storedUserData);
-                setCpf(parsedUserData.cpf); // Preenche CPF
-                setPassword(parsedUserData.password); // Preenche Senha
-                setLembrarLogin(true); // Marca a checkbox se os dados existirem
+                setCpf(parsedUserData.cpf);
+                setPassword(parsedUserData.password);
+                setLembrarLogin(true);
             }
         } catch (e) {
-            console.error('Erro ao recuperar dados do usuário', e);
+            console.error('Erro ao recuperar dados do usuário:', e);
         }
     };
 
     useEffect(() => {
-        // Chama a função para buscar dados do AsyncStorage na montagem do componente
         fetchUserData();
     }, []);
 
     const handleLogin = async () => {
+        setEstudante(getUrl(cpf))
+        if (!cpf || !password) {
+            Alert.alert("Erro", "Por favor, preencha todos os campos.");
+            return;
+        }
+
+        setIsLoading(true);
+        console.log(`Tentativa de login com CPF: ${cpf}`); // Log para debug
+
         const dataUser = await getUser(cpf);
 
         if (dataUser) {
+            console.log("Dados do usuário recebidos:", dataUser); // Log para debug
             if (dataUser.cpf === cpf && dataUser.password === password) {
-                saveUserData(dataUser); // Salva os dados do usuário no AsyncStorage
-                // Se "lembrarLogin" estiver marcado, armazena os dados
+                saveUserData(dataUser);
                 if (lembrarLogin) {
-                    await AsyncStorage.setItem('@user_data', JSON.stringify(dataUser));
+                    await AsyncStorage.setItem('@user_data', JSON.stringify({ cpf, password }));
                 } else {
-                    // Se a checkbox não estiver marcada, remove os dados do AsyncStorage
                     await AsyncStorage.removeItem('@user_data');
                 }
-                setIsLoggedIn(true); // Atualiza o estado de login
+                setIsLoggedIn(true);
             } else {
                 Alert.alert("Erro", "CPF ou senha incorretos");
             }
         } else {
+            console.error("Erro na recuperação de dados. Verifique a conexão.");
             Alert.alert("Erro", "Verifique a conexão com a internet e tente novamente!");
         }
+
+        setIsLoading(false);
     };
+
+    const pegacpf = (cpf) => {
+
+    }
+
 
     return (
         <Background>
             <View style={styles.container}>
                 <Image source={imgTrempe} style={styles.logo} resizeMode="contain" />
-                <Text style={[styles.text, styles.title]}>Bem-vindo ao 30º encontrão!</Text>
+                <Text>{estudante}</Text>
+                <Text style={[styles.text, styles.title]}>Bem-vindo ao 30º econtrão!</Text>
                 <Text style={[styles.text, styles.subtitle]}>Realizar login</Text>
                 <TextInput
                     placeholder="CPF ou Matrícula"
                     value={cpf}
                     onChangeText={setCpf}
-                    style={styles.input}
+                    style={[styles.input, !cpf && styles.inputError]}
                 />
                 <TextInput
                     placeholder="Sua Senha"
                     secureTextEntry={true}
                     value={password}
                     onChangeText={setPassword}
-                    style={styles.input}
+                    style={[styles.input, !password && styles.inputError]}
                 />
                 <Text style={styles.helpText}>Como obter minha senha?</Text>
 
@@ -87,8 +104,12 @@ const LoginView = ({ setIsLoggedIn }) => {
                     <Text style={styles.checkboxLabel}>Lembrar login</Text>
                 </View>
 
-                <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                    <Text style={styles.buttonText}>Entrar</Text>
+                <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={isLoading}>
+                    {isLoading ? (
+                        <ActivityIndicator size="small" color="#fff" />
+                    ) : (
+                        <Text style={styles.buttonText}>Entrar</Text>
+                    )}
                 </TouchableOpacity>
                 <Image source={imgIffar} style={styles.logoI} resizeMode="contain" />
             </View>
@@ -124,6 +145,9 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 10,
+    },
+    inputError: {
+        borderColor: 'red', // Indicar erro nos inputs
     },
     helpText: {
         fontSize: 10,
@@ -172,7 +196,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     checkboxChecked: {
-        backgroundColor: '#ea2a26', // Cor de fundo quando marcada
+        backgroundColor: '#ea2a26',
     },
     checkboxLabel: {
         fontSize: 16,
