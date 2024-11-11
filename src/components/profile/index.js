@@ -61,7 +61,7 @@ const ProfileCard = () => {
                 <TouchableOpacity onPress={pickImage}>
                     {Navatar ? (
                         <Image
-                            source={{ uri: `http://192.168.1.16:8080${estudante.avatar}` }}
+                            source={{ uri: `http://192.168.1.17:8080${estudante.avatar}` }}
                             style={styles.avatar}
                         />
                     ) : (
@@ -73,6 +73,7 @@ const ProfileCard = () => {
                 <View style={styles.content}>
                     <Text style={styles.name}>{estudante?.name}</Text>
                     <Text style={styles.campus}>{estudante?.campus}</Text>
+                    <Text style={styles.campus}>{estudante?.roles}</Text>
                 </View>
             </View>
         </View>

@@ -47,17 +47,15 @@ const getParticipants = async (id) => {
     }
 }
 
-const getParticipantsByCommission = async (id) => {
+const getParticipantsByFecult = async () => {
     try {
-        const body = await get(`competitions-teams/competition/${id}`);
+        const body = await get(`competitions-teams/fecult`);
+        console.warn("corpo", body);
 
-        console.warn("corpo", body.response);
 
-
-        return body.response;
+        return body;
     } catch (e) {
         return {
-            aaaaa: aaaaaaaaaaa,
             success: false,
             message: 'Erro: ' + e,
             response: {},
@@ -79,4 +77,4 @@ const delCompetition = async (id) => {
     }
 }
 
-export { getCompetitionTeam, getCompetitionTeams, delCompetition, getParticipants, getParticipantsByCommission }
+export { getCompetitionTeam, getCompetitionTeams, delCompetition, getParticipants, getParticipantsByFecult }

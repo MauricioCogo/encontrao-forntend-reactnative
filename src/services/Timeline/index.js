@@ -19,8 +19,6 @@ const getTimeline = async (id) => {
 }
 
 const getTimelineByUser = async (id) => {
-    console.warn("ID: ", id);
-
     try {
         const body = await get(`timeline/user/${id}`)
 

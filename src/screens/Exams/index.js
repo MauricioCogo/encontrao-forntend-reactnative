@@ -2,6 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import ExamView from './Exam';
 import ParticipantsView from './Participants';
+import CommissionExamView from './Commission';
 
 const Stack = createStackNavigator();
 
@@ -16,7 +17,12 @@ const Exams = () => {
             <Stack.Screen
                 name="Participants"
                 component={ParticipantsView}
-                options={{ headerShown: false }} // Remove o cabeçalho
+                options={{ title: 'Participantes' }} // Substitua 'Participantes' pelo nome que você deseja mostrar
+            />
+            <Stack.Screen
+                name="Grades"
+                component={CommissionExamView}
+                options={{ title: 'Notas' }} // Substitua 'Participantes' pelo nome que você deseja mostrar
             />
         </Stack.Navigator>
     );

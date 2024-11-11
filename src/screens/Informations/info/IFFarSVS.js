@@ -17,12 +17,12 @@ function IFFarSVS() {
 
                 <Text style={styles.subtitle}>Sobre o Campus</Text>
                 <Text style={styles.text}>
-                    O **Campus São Vicente do Sul** do Instituto Federal Farroupilha (IFFar) tem uma trajetória rica, começando em 17 de novembro de 1954, com a criação da **Escola de Iniciação Agrícola**. Desde sua fundação, passou por diversas transformações institucionais, incluindo a incorporação à Universidade Federal de Santa Maria em 1968 e, posteriormente, a evolução para o **Centro Federal de Educação Tecnológica de São Vicente do Sul** em 2002.{'\n'}
-                    {'\n'}
-                    Em 2008, com a criação dos Institutos Federais, o campus foi integrado ao Instituto Federal Farroupilha, consolidando seu papel na oferta de educação técnica e superior na região.{'\n'}
+                    O <Text style={styles.bold}>Campus São Vicente do Sul</Text> do Instituto Federal Farroupilha (IFFar) tem uma trajetória rica, começando em 17 de novembro de 1954, com a criação da <Text style={styles.bold}>Escola de Iniciação Agrícola</Text>. Desde sua fundação, passou por diversas transformações institucionais, incluindo a incorporação à Universidade Federal de Santa Maria em 1968 e, posteriormente, a evolução para o <Text style={styles.bold}>Centro Federal de Educação Tecnológica de São Vicente do Sul</Text> em 2002.{'\n\n'}
+                    Em 2008, com a criação dos Institutos Federais, o campus foi integrado ao Instituto Federal Farroupilha, consolidando seu papel na oferta de educação técnica e superior na região.
                 </Text>
 
                 <Text style={styles.subtitle}>Cursos Oferecidos</Text>
+
                 <Text style={styles.subtitle}>Cursos Integrados</Text>
                 <Text style={styles.text}>
                     Estes cursos permitem que o estudante faça o Ensino Médio com formação profissional técnica em uma única matrícula.{'\n'}
@@ -65,7 +65,7 @@ function IFFarSVS() {
                 <Text style={styles.subtitle}>Contato</Text>
                 <Text style={styles.text}>
                     Endereço: Rua 20 de Setembro, 2616{'\n'}
-                    São Vicente do Sul - Rio Grande do Sul/RS {'\n'}
+                    São Vicente do Sul - Rio Grande do Sul/RS{'\n'}
                     Telefone: Ver com o Eduardo{'\n'}
                     Email: Ver com o Eduardo
                 </Text>
@@ -77,37 +77,39 @@ function IFFarSVS() {
 const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
-        paddingHorizontal: 20,  // Ajuste horizontal
-        paddingVertical: 10,    // Ajuste vertical
-        marginVertical: 10,     // Espaçamento externo entre elementos principais
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        marginVertical: 10,
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginBottom: 20,       // Espaçamento inferior
-        paddingHorizontal: 10,  // Ajuste para dar mais respiro ao título
+        marginBottom: 20,
+        paddingHorizontal: 10,
     },
     image: {
         width: '100%',
         height: 150,
         borderRadius: 10,
-        marginBottom: 20,       // Espaçamento inferior da imagem
+        marginBottom: 20,
     },
     subtitle: {
         fontSize: 18,
         fontWeight: 'bold',
         marginTop: 20,
-        marginBottom: 10,       // Ajuste de margem superior e inferior
+        marginBottom: 10,
         color: '#343a40',
     },
     text: {
         fontSize: 16,
-        marginBottom: 10,       // Ajuste de espaçamento inferior entre parágrafos
-        paddingHorizontal: 5,   // Espaçamento interno para melhor leitura
+        marginBottom: 10,
+        paddingHorizontal: 5,
         color: '#495057',
     },
+    bold: {
+        fontWeight: 'bold',
+    },
 });
-
 
 export default IFFarSVS;

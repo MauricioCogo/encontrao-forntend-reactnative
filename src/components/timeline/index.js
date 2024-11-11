@@ -40,30 +40,39 @@ const Schedule = ({ id }) => {
                     <Text style={styles.headerCell}>Tipo</Text>
                     <Text style={styles.headerCell}>Local</Text>
                 </View>
-                {data && data.length > 0 ? (
-                    <>
-                        {data.map((item, index) => (
-                            <View key={index} style={[styles.tableRow, getRowStyle(index, data.length)]}>
-                                <View style={styles.dateContainer}>
-                                    <Text style={styles.label}>{"às ou até às"}</Text>
-                                    <Text style={styles.date}>{`${format(parseISO(item.date), 'dd/MM')}`}</Text>
-                                    <Text style={styles.date}>{`${format(parseISO(item.date), 'HH:mm')}`}</Text>
-                                </View>
-                                <Text style={styles.cell}>{item.name}</Text>
-                                <Text style={styles.cell}>{item.type}</Text>
-                                <Text style={styles.cell}>{item.local}</Text>
+                {data.map((item, index) => (
+                    <View key={index} style={[styles.tableRow, getRowStyle(index, data.length)]}>
+                        {item.endTime ? (
+                            <View style={styles.dateContainer}>
+                                <Text style={styles.date}>
+                                    {item.endTime ? format(parseISO(item.initialTime), 'HH:mm') : '--'}
+                                </Text>
+                                <Text style={styles.label}>
+                                    até as
+                                </Text>
+                                <Text style={styles.date}>
+                                    {item.endTime ? format(parseISO(item.endTime), 'HH:mm') : '--'}
+                                </Text>
                             </View>
-                        ))}
-                        <View style={styles.tableFooter}>
-                            <Text style={styles.footerText}>Fim da Tabela</Text>
-                        </View>
-                    </>
-                ) : (
-                    <Text style={styles.emptyText}>Nenhum dado disponível.</Text>
-                )}
+                        ) : (
+                            <View style={styles.dateContainer}>
+                                <Text style={styles.date}>
+                                    {item.initialTime ? format(parseISO(item.initialTime), 'dd/MM') : '--'}
+                                </Text>
+                                <Text style={styles.date}>
+                                    {item.initialTime ? format(parseISO(item.initialTime), 'HH:mm') : '--'}
+                                </Text>
+                            </View>
+                        )}
+                        <Text style={styles.cell}>{item.name}</Text>
+                        <Text style={styles.cell}>{item.type}</Text>
+                        <Text style={styles.cell}>{item.local}</Text>
+                    </View>
+                ))}
+
 
             </View>
-        </ScrollView>
+        </ScrollView >
     );
 };
 

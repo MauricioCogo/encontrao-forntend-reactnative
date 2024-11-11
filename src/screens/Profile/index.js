@@ -10,28 +10,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 function ProfileView({ setIsLoggedIn }) { // Receba o setIsLoggedIn via props
     const [estudante, setEstudante] = useState(null);
 
-    const handleLogout = () => {
-        Alert.alert(
-            "Logout",
-            "Você tem certeza que deseja sair?",
-            [
-                {
-                    text: "Cancelar",
-                    style: "cancel"
-                },
-                {
-                    text: "Sair",
-                    onPress: async () => {
-                        // Remova os dados do AsyncStorage
-                        await AsyncStorage.removeItem('@user_data');
-                        setEstudante(null);
-                        setIsLoggedIn(false);
-                    }
-                }
-            ]
-        );
-    };
-
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -59,9 +37,6 @@ function ProfileView({ setIsLoggedIn }) { // Receba o setIsLoggedIn via props
             <ScrollView contentContainerStyle={styles.container}>
                 <ProfileCard />
                 <Timeline id={estudante.id} />
-                <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-                    <Text style={styles.logoutButtonText}>Sair</Text>
-                </TouchableOpacity>
             </ScrollView>
         </Background>
     );

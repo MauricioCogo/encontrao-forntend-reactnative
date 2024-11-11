@@ -3,40 +3,41 @@ import { View, Text, StyleSheet, Alert } from 'react-native';
 import Background from '../../../components/background';
 import Header from '../../../components/header';
 import { ScrollView } from 'react-native';
-import { getParticipants } from '../../../services/CompetitionsTeams/index';
 import CustomCard from '../../../components/informations';
+import { getGradeTeam } from '../../../services/Commissions';
+import CommissionCard from '../../../components/gradeTeam';
 
-const ParticipantsView = ({ route, navigation }) => {
+const CommissionExamView = ({ route, navigation }) => {
     const { competitionId } = route.params;
-    const [participants, setParticipants] = useState([]);
+    const [grade, setGrade] = useState([]);
 
     useEffect(() => {
-        const fetchedParticipants = async () => {
+        const fetchedGrade = async () => {
             try {
-                const fetchedParticipants = await getParticipants(competitionId);
-                console.warn("Teste");
-                console.warn(fetchedParticipants);
-                setParticipants(fetchedParticipants);
+                const fetchedGrade = await getGradeTeam(competitionId);
+                console.warn(fetchedGrade); // Verifique a estrutura dos dados retornados
+                setGrade(fetchedGrade); // Armazenando a resposta no estado grade
             } catch (error) {
                 Alert.alert('Error', 'Failed to fetch competitions');
             }
         };
 
-        fetchedParticipants();
-    }, [competitionId]); // Adicione competitionId ao array de dependências
-
+        fetchedGrade();
+    }, [competitionId]);
 
     return (
         <Background>
             <View style={{ flex: 1 }}>
                 <ScrollView contentContainerStyle={styles.container}>
                     <Header />
-                    {participants.length > 0 ? (
-                        participants.map((item) => (
-                            <CustomCard
+                    {/* Verifica se grade tem elementos antes de mapear */}
+                    {grade.length > 0 ? (
+                        grade.map((item) => (
+                            <CommissionCard
                                 key={item.id}
-                                title={item.campus}
-                                items={item.participants}
+                                instituicao={item.instituicao}  // Nome da instituição
+                                teamGrade={item.teamGrade}  // Nota da equipe
+                                participants={item.participants}  // Lista de participantes
                                 pad={10}
                             />
                         ))
@@ -90,4 +91,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ParticipantsView;
+export default CommissionExamView;

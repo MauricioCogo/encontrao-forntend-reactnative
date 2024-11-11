@@ -26,6 +26,7 @@ const PresentationsView = () => {
         <Background>
             <ScrollView style={styles.container}>
                 <Header />
+                <Text style={styles.title}>Ordem das Apresentações: </Text>
                 {presentations.length > 0 ? ( // Verifica se há apresentações
                     presentations.map((item, index) => (
                         <PresentationsCard key={index} data={item} /> // Passa o item como prop data
@@ -36,7 +37,7 @@ const PresentationsView = () => {
                     </Text>
                 )}
             </ScrollView>
-        </Background>
+        </Background >
     );
 };
 
@@ -50,6 +51,13 @@ const styles = StyleSheet.create({
         color: '#ff0000', // Cor de erro
         textAlign: 'center',
         marginTop: 20,
+    },
+    title: {
+        fontSize: 24,        // Tamanho da fonte
+        fontWeight: 'bold',  // Negrito
+        color: '#000',    // Cor do texto
+        textAlign: 'center',  // Centraliza o texto
+        marginVertical: 20,  // Margem vertical
     },
 });
 

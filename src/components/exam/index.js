@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, LayoutAnimation, Platform, UIManager, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, LayoutAnimation, Platform, UIManager } from 'react-native';
 import Button from '../button/index';
 import { format, parseISO } from 'date-fns';
 import { useNavigation } from '@react-navigation/native';
@@ -13,10 +13,12 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
     }
 }
 
-const ExamCard = ({ id, name, modality, description, date, commission, local }) => {
+const ExamCard = ({ id, name, modality, description, date, commission, local, fecult }) => {
     const [expanded, setExpanded] = useState(false);
     const formattedDate = format(parseISO(date), 'dd/MM/yyyy HH:mm');
     const navigation = useNavigation(); // Obter o objeto de navegação
+    console.warn(fecult);
+
 
     const handleToggle = () => {
         // Ativa uma animação de layout suave
@@ -24,10 +26,14 @@ const ExamCard = ({ id, name, modality, description, date, commission, local }) 
         setExpanded(prevExpanded => !prevExpanded);
     };
 
-    const alerta = () => {
-        console.warn("SDFSD", id);
-        navigation.navigate('Participants', { competitionId: id })
-    }
+    const alerta = (type) => {
+        console.warn("Navegando para:", type, "ID:", id);
+        if (type === 'Com') {
+            navigation.navigate('Grades', { competitionId: id });
+        } else if (type === 'Par') {
+            navigation.navigate('Participants', { competitionId: id });
+        }
+    };
 
     return (
         <View style={styles.card}>
@@ -40,24 +46,30 @@ const ExamCard = ({ id, name, modality, description, date, commission, local }) 
                     <Text style={styles.detail}>Data: {formattedDate || "Sem data"}</Text>
                     <Text style={styles.detail}>Local: {local || "Sem hora"}</Text>
                     <Text style={styles.detail}>{description || "Sem descrição"}</Text>
-                    <TouchableOpacity style={styles.button}>
-                        <Button
-                            onClick={() => alerta()} // Corrigido
-                            label={"Participantes"}
-                            styles={{
-                                alignItems: 'center',
-                                backgroundColor: '#ff7470',
-                                width: 270,
-                                height: 45,
-                                borderRadius: 20,
-                                color: '#000',
-                            }}
-                        />
-                    </TouchableOpacity>
+                    {fecult ? (
+                        <Text style={styles.message}>Vá para a aba FECULT</Text>
+                    ) : (
+                        <>
+                            <TouchableOpacity style={styles.button}>
+                                <Button
+                                    onClick={() => alerta('Par')} // Passando 'Par' para navegar para a tela de participantes
+                                    label={"Participantes"}
+                                    styles={{
+                                        alignItems: 'center',
+                                        backgroundColor: '#ff7470',
+                                        width: 270,
+                                        height: 45,
+                                        borderRadius: 20,
+                                        color: '#000',
+                                    }}
+                                />
+                            </TouchableOpacity>
+                        </>
+                    )}
                     {commission && (
                         <TouchableOpacity style={styles.button}>
                             <Button
-                                onClick={() => alerta("Error!", "Não possui a comissão desta prova!")} // Corrigido
+                                onClick={() => alerta('Com')} // Passando 'Com' para navegar para a tela de grades
                                 label={"Comissão"}
                                 styles={{
                                     alignItems: 'center',
@@ -110,6 +122,12 @@ const styles = StyleSheet.create({
     details: {
         padding: 16,
         alignItems: 'center', // Centraliza todo o conteúdo dos detalhes
+    },
+    message: {
+        marginTop: 10,
+        fontSize: 14,
+        textAlign: 'center', // Centraliza a mensagem
+        color: '#000', // Cor da mensagem
     },
 });
 

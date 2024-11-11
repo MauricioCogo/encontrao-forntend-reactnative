@@ -38,6 +38,7 @@ const ExamView = () => {
                             date={item.initialDate}
                             commission={item.commission}
                             local={item.point.description}
+                            fecult={item.festivalEvent}
                             style={styles.card}
                         />
                     ))

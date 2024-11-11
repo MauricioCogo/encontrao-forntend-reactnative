@@ -1,4 +1,4 @@
-import { get, patch, del } from '../index'
+import { get, post, del } from '../index'
 
 const getCommission = async (id) => {
     try {
@@ -46,9 +46,22 @@ const getGrade = async (id) => {
     }
 }
 
-const setGrade = async (id) => {
+const getGradeTeam = async (id) => {
     try {
-        const body = await patch(`commissions/byteam/${id}`);
+        const body = await get(`commissions/grade/${id}`);
+        return body;
+    } catch (e) {
+        return {
+            success: false,
+            message: 'Erro: ' + e,
+            response: {},
+        };
+    }
+}
+
+const setGrade = async (data) => {
+    try {
+        const body = await post(`commissions/`, data);
         return body;
     } catch (e) {
         return {
@@ -73,4 +86,4 @@ const delCtecompetition = async (id) => {
     }
 }
 
-export { getCommission, getCommissions, delCtecompetition, getGrade, setGrade }
+export { getCommission, getCommissions, delCtecompetition, getGrade, setGrade, getGradeTeam }

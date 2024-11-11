@@ -4,7 +4,6 @@ import { format, parseISO } from 'date-fns';
 
 const PresentationsCard = ({ data }) => {
     const {
-        order,
         entrance,
         tdance1,
         tdance2,
@@ -38,7 +37,6 @@ const PresentationsCard = ({ data }) => {
                 <View style={styles.header}>
                     <Text style={styles.title}>{entity}</Text>
                     <Text style={styles.subtitle}>{campus}</Text>
-                    <Text style={styles.order}>Ordem: {order}</Text>
                     {date && <Text style={styles.date}>Data: {format(parseISO(date), 'dd/MM')}</Text>}
                 </View>
                 <ScrollView contentContainerStyle={styles.scrollView}>

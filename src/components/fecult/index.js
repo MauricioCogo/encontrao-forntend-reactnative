@@ -1,18 +1,20 @@
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 
-const CustomCard = ({ title, items = [], pad = 16 }) => {
+const FecultCard = ({ title, competition, items = [], pad }) => {
     return (
         <View style={[styles.container, { padding: pad }]}>
             <View style={styles.card}>
-                <View style={styles.header}>
+                <View style={styles.Header}>
                     <Text style={styles.title}>{title}</Text>
                 </View>
-                <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
-                    <View style={styles.content}>
+                <ScrollView contentContainerStyle={styles.scrollView}>
+                    <View style={styles.Content}>
                         {items.map((item, index) => (
                             <View key={index} style={styles.item}>
-                                <Text style={styles.itemText}>{item}</Text>
+                                <Text style={styles.itemText}>
+                                    <Text style={styles.boldText}>Competição:</Text> {item.competitionName}{'\n'}
+                                    <Text style={styles.boldText}>Participantes:</Text> {Array.isArray(item.participants) ? item.participants.join(', ') : 'N/A'}{'\n'}                                </Text>
                             </View>
                         ))}
                     </View>
@@ -27,47 +29,43 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingHorizontal: 16,
         marginBottom: 15,
-        alignItems: "center"
     },
     card: {
-        width: '100%', // Faz o card ocupar a largura disponível
-        maxWidth: 350, // Limita a largura máxima do card
+        width: '100%',
         borderRadius: 20,
         borderWidth: 1,
         borderColor: '#e86b70',
         backgroundColor: '#fcdfde',
         overflow: 'hidden',
-        marginBottom: 15,
     },
-    header: {
-        padding: 12,
+    Header: {
+        padding: 10,
         alignItems: 'center',
         backgroundColor: '#e86b70',
         borderTopLeftRadius: 8,
         borderTopRightRadius: 8,
     },
     title: {
-        fontSize: 22,
+        fontSize: 20,
         fontWeight: '600',
         color: '#fff',
     },
-    content: {
-        paddingBottom: 10,
-        paddingHorizontal: 16, // Adicionando padding horizontal ao conteúdo
+    Content: {
+        overflow: 'hidden',
     },
     scrollView: {
         flexGrow: 1,
     },
     item: {
-        paddingVertical: 10,
-        paddingHorizontal: 8,
-        borderBottomWidth: 1,
-        borderBottomColor: '#e0e0e0', // Adicionando uma borda fina entre os itens
+        padding: 10,
     },
     itemText: {
-        fontSize: 18,
+        fontSize: 16,
         color: '#555',
+    },
+    boldText: {
+        fontWeight: 'bold',
     },
 });
 
-export default CustomCard;
+export default FecultCard;

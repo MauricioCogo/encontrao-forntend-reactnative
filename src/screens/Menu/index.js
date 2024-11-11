@@ -6,19 +6,16 @@ import Header from '../../components/header';
 const MenuView = () => {
     const menu = {
         '15/11': {
-            cafe: 'Panquecas de Banana com Mel e Frutas Vermelhas',
-            almoco: 'Filé Mignon ao Molho de Vinho com Purê de Batata e Aspargos',
-            janta: 'Sopa de Abóbora com Gengibre e Croutons de Alho',
+            cafe: 'Leite, Aveia, Granola, Pão cachorrinho, Doce de leite ou doce de frutas, Maçã',
+            almoco: 'Arroz, Feijão, Lasanha, Molho de queijo, Alface, Cenoura, Beterraba, Vagem, Brócolis',
+            janta: 'Arroz, Feijão, Macarrão, Queijo ralado, Alface, Cenoura, Beterraba, Repolho, Brócolis',
+            lanche: 'Pizza bolonhesa, Maçã',
         },
         '16/11': {
-            cafe: 'Smoothie Verde com Espinafre, Abacate e Maçã',
-            almoco: 'Salada de Quinoa com Legumes Grelhados e Molho de Tahine',
-            janta: 'Tacos de Carne de Sol com Salsa de Manga e Arroz de Coco',
-        },
-        '17/11': {
-            cafe: 'Croissant de Amêndoas com Café Expresso',
-            almoco: 'Peixe Assado com Ervas e Batatas Rosti, Salada de Rúcula',
-            janta: 'Ratatouille com Queijo de Cabra e Pão de Alho',
+            cafe: 'Leite, Aveia, Granola, Omelete, Morango',
+            almoco: 'Carreteiro de charque, Costelão, Pão cacetinho, Alface, Repolho, Servir no NTG',
+            janta: 'Frango assado caramelado, Alface, Cenoura, Beterraba, Vagem',
+            lanche: 'Pão de sanduíche, ricota, cenoura, banana',
         },
     };
 
@@ -40,6 +37,10 @@ const MenuView = () => {
                         <View style={styles.mealContainer}>
                             <Text style={styles.mealTitle}>Jantar:</Text>
                             <Text style={styles.meal}>{meals.janta}</Text>
+                        </View>
+                        <View style={styles.mealContainer}>
+                            <Text style={styles.mealTitle}>Lanche da Noite:</Text>
+                            <Text style={styles.meal}>{meals.lanche}</Text>
                         </View>
                     </View>
                 ))}

@@ -5,11 +5,11 @@ import Footer from './footer.router';
 import ProfileView from '../screens/Profile';
 import InfoView from '../screens/Informations';
 import RulesView from '../screens/Rules';
-import CommisionView from '../screens/Commission';
 import MenuView from '../screens/Menu';
 import HelpView from '../screens/Help';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PresentationsView from '../screens/Presentations';
+import FecultView from '../screens/Fecult';
 
 const Drawer = createDrawerNavigator();
 
@@ -73,7 +73,7 @@ export default function DrawerRoutes() {
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             {Icon ? (
                                 <Image
-                                    source={{ uri: `http://192.168.1.16:8080${estudante?.avatar}` }}
+                                    source={{ uri: `http://192.168.1.17:8080${estudante?.avatar}` }}
                                     style={{ width: 30, height: 30, borderRadius: 12 }}
                                     onError={() => setIcon(false)}  // Fallback em caso de erro de carregamento
                                 />
@@ -117,6 +117,20 @@ export default function DrawerRoutes() {
                     drawerLabel: 'Apresentações'
                 }} />
             <Drawer.Screen
+                name="FECULT"
+                component={FecultView}
+                options={{
+                    drawerIcon: ({ color, size }) => (
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Image
+                                source={require('../../assets/icons/karaoke.png')}
+                                style={{ width: 30, height: 30, borderRadius: 12 }}
+                            />
+                        </View>
+                    ),
+                    drawerLabel: 'FECULT'
+                }} />
+            <Drawer.Screen
                 name="Cardápio"
                 component={MenuView}
                 options={{
@@ -143,20 +157,6 @@ export default function DrawerRoutes() {
                         </View>
                     ),
                     drawerLabel: 'Regras'
-                }} />
-            <Drawer.Screen
-                name="Comissão"
-                component={CommisionView}
-                options={{
-                    drawerIcon: ({ color, size }) => (
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Image
-                                source={require('../../assets/icons/equipe.png')}
-                                style={{ width: 30, height: 30 }}
-                            />
-                        </View>
-                    ),
-                    drawerLabel: 'Comissão'
                 }} />
             <Drawer.Screen
                 name="Ajuda"
