@@ -42,9 +42,10 @@ const ProfileCard = () => {
         if (base64Image && estudante?.id) {
             setImage(estudante.id, base64Image)
                 .then(response => {
-                    console.log("Resposta do servidor:", response);
                     if (response.avatar) {
                         Alert.alert("Sucesso!", "Sua foto foi alterada com sucesso, reinicie o app para ver ela!");
+                    } else {
+                        Alert.alert("Erro!", "Não foi possivel alterar sua foto");
                     }
                 })
                 .catch(error => {
@@ -61,7 +62,7 @@ const ProfileCard = () => {
                 <TouchableOpacity onPress={pickImage}>
                     {Navatar ? (
                         <Image
-                            source={{ uri: `http://192.168.1.17:8080${estudante.avatar}` }}
+                            source={{ uri: `http://192.168.1.17:9090${estudante.avatar}` }}
                             style={styles.avatar}
                         />
                     ) : (

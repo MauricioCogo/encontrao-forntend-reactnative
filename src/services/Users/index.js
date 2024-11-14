@@ -49,8 +49,7 @@ const setImage = async (cpf, base64Image) => {
 
         console.warn(body);
 
-
-        const response = await put(`users/image/${cpf}`, {}, body); // Passando o corpo
+        const response = await put(`users/image/${cpf}`, body); // Passando o corpo
 
 
         return response;

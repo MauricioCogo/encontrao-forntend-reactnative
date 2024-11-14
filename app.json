@@ -4,7 +4,7 @@
     "slug": "econtrao",
     "version": "1.0.3",
     "orientation": "portrait",
-    "icon": "./assets/Trempe.png",
+    "icon": "./assets/TrempeIcon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",

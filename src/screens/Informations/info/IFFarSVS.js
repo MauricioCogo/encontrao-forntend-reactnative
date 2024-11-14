@@ -11,7 +11,7 @@ function IFFarSVS() {
                 <Text style={styles.title}>Instituto Federal Farroupilha - São Vicente do Sul</Text>
 
                 <Image
-                    source={{ uri: 'https://via.placeholder.com/300x150' }} // Substitua com a URL real da imagem
+                    source={require("../../../../assets/tb.jpg")} // Substitua com a URL real da imagem
                     style={styles.image}
                 />
 
@@ -66,8 +66,8 @@ function IFFarSVS() {
                 <Text style={styles.text}>
                     Endereço: Rua 20 de Setembro, 2616{'\n'}
                     São Vicente do Sul - Rio Grande do Sul/RS{'\n'}
-                    Telefone: Ver com o Eduardo{'\n'}
-                    Email: Ver com o Eduardo
+                    Telefone: 3218-8500{'\n'}
+                    Email: gabinete.svs@iffarroupilha.edu.br
                 </Text>
             </ScrollView>
         </Background>
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     },
     image: {
         width: '100%',
-        height: 150,
+        height: 200,
         borderRadius: 10,
         marginBottom: 20,
     },

@@ -1,30 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native';
-import { useUser } from '../../context/Student'; // Importe o contexto
+import { useUser } from '../../context/Student';
 import imgTrempe from '../../../assets/Trempe.png';
 import imgIffar from '../../../assets/iffarsvs.png';
 import Background from "../../components/background";
 import { getUser } from "../../services/Users/index";
 import { getUrl } from "../../services/index";
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Certifique-se de importar AsyncStorage
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginView = ({ setIsLoggedIn }) => {
     const [cpf, setCpf] = useState("");
     const [password, setPassword] = useState("");
-    const { saveUserData } = useUser(); // Use o contexto para salvar os dados do usuário
-    const [lembrarLogin, setLembrarLogin] = useState(false); // Novo estado para checkbox
+    const { saveUserData } = useUser();
+    const [lembrarLogin, setLembrarLogin] = useState(false);
     const [estudante, setEstudante] = useState(null);
     const [teste, setTeste] = useState(null);
 
-    // Função para buscar dados do AsyncStorage
     const fetchUserData = async () => {
         try {
             const storedUserData = await AsyncStorage.getItem('@user_data');
+            const storedAuthData = await AsyncStorage.getItem('@auth_data');
+
             if (storedUserData) {
-                const parsedUserData = JSON.parse(storedUserData);
-                setCpf(parsedUserData.cpf); // Preenche CPF
-                setPassword(parsedUserData.password); // Preenche Senha
-                setLembrarLogin(true); // Marca a checkbox se os dados existirem
+                setEstudante(JSON.parse(storedUserData));
+            }
+            if (storedAuthData) {
+                const parsedAuthData = JSON.parse(storedAuthData);
+                setCpf(parsedAuthData.cpf);
+                setPassword(parsedAuthData.password);
+                setLembrarLogin(true);
             }
         } catch (e) {
             console.error('Erro ao recuperar dados do usuário', e);
@@ -32,26 +36,25 @@ const LoginView = ({ setIsLoggedIn }) => {
     };
 
     useEffect(() => {
-        // Chama a função para buscar dados do AsyncStorage na montagem do componente
         fetchUserData();
     }, []);
 
     const handleLogin = async () => {
         const dataUser = await getUser(cpf);
-        setTeste(getUrl)
+        setTeste(getUrl);
         if (dataUser) {
             if (dataUser.cpf === cpf && dataUser.password === password) {
-                console.warn("asda");
-                saveUserData(dataUser); // Salva os dados do usuário no AsyncStorage
-                // Se "lembrarLogin" estiver marcado, armazena os dados
+                saveUserData(dataUser);
+                setEstudante(dataUser);
+
+                await AsyncStorage.setItem('@user_data', JSON.stringify(dataUser));
+
                 if (lembrarLogin) {
-                    await AsyncStorage.setItem('@user_data', JSON.stringify(dataUser));
-                    setEstudante(dataUser)
+                    await AsyncStorage.setItem('@auth_data', JSON.stringify({ cpf, password }));
                 } else {
-                    // Se a checkbox não estiver marcada, remove os dados do AsyncStorage
-                    await AsyncStorage.removeItem('@user_data');
+                    await AsyncStorage.removeItem('@auth_data');
                 }
-                setIsLoggedIn(true); // Atualiza o estado de login
+                setIsLoggedIn(true);
             } else {
                 Alert.alert("Erro", "CPF ou senha incorretos");
             }
@@ -67,6 +70,7 @@ const LoginView = ({ setIsLoggedIn }) => {
             [{ text: "Entendido", style: "cancel" }]
         );
     };
+
     return (
         <Background>
             <View style={styles.container}>
@@ -143,7 +147,7 @@ const styles = StyleSheet.create({
         fontSize: 10,
         textAlign: 'center',
         marginVertical: 5,
-        color: '#007BFF', // Cor azul para indicar que é clicável
+        color: '#007BFF',
     },
     button: {
         marginTop: 30,
@@ -187,7 +191,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     checkboxChecked: {
-        backgroundColor: '#ea2a26', // Cor de fundo quando marcada
+        backgroundColor: '#ea2a26',
     },
     checkboxLabel: {
         fontSize: 16,

@@ -1,12 +1,12 @@
-// src/screens/LoginView.js
 import React, { useEffect, useRef, useState } from 'react';
-import { Alert, StyleSheet, View, Image } from 'react-native';
-
+import { Alert, StyleSheet, View, Text } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { requestForegroundPermissionsAsync, getCurrentPositionAsync } from 'expo-location';
 import { getPoints, getPointsByFilter } from '../../services/Points'; // Altere para o caminho correto
 import { Picker } from '@react-native-picker/picker';
-
+import Icon from 'react-native-vector-icons/Fontisto'; // Importando o FontAwesome
+import IconFont from 'react-native-vector-icons/FontAwesome6'; // Importando o FontAwesome
+import IconEntpo from 'react-native-vector-icons/Entypo'; // Importando o FontAwesome
 
 const center = {
     latitude: -29.703101463771155,
@@ -132,7 +132,8 @@ const MapCard = () => {
                     }}
                 >
                     {points ? (
-                        points.map(point => (
+                        points.map(point =>
+                        (
                             <Marker
                                 key={point.id}
                                 coordinate={{
@@ -142,16 +143,80 @@ const MapCard = () => {
                                 title={point.name}
                                 description={point.description}
                             >
-                                <Image
-                                    source={{ uri: `http://192.168.1.17:8080/images/view/icon/${point.icon}` }} // URI do ícone
-                                    style={{
-                                        width: point.size, // Tamanho personalizado por ponto
-                                        height: point.size,
-                                    }}
-                                    resizeMode="contain" // Mantém a proporção sem cortar
-                                />
+                                {
+                                    point.type == "Local" ? (
+                                        <Icon
+                                            name="pinboard" // Ícone de pin do FontAwesome
+                                            size={40} // Tamanho do ícone
+                                            color="#ff0000" // Cor do ícone
+                                            style={{
+                                                transform: [{ rotate: '45deg' }], // Aplique a rotação de 45 graus
+                                                textShadowColor: 'black', // Cor do contorno
+                                                textShadowOffset: { width: 5, height: 5 }, // Tamanho do contorno
+                                                textShadowRadius: 1, // Suaviza o contorno
+                                            }}
+                                        />
+                                    ) : null
+                                }
+                                {
+                                    point.type == "Prova" ? (
+                                        <IconFont
+                                            name="trophy" // Ícone de troféu
+                                            size={20} // Tamanho do ícone
+                                            color="#e0d100" // Cor do ícone
+                                            style={{
+                                                textShadowColor: 'black', // Cor do contorno
+                                                textShadowOffset: { width: 5, height: 5 }, // Tamanho do contorno
+                                                textShadowRadius: 1, // Suaviza o contorno
+                                            }}
+                                        />
+                                    ) : null
+                                }
+                                {
+                                    point.type == "Bebedouro" ? (
+                                        <IconEntpo
+                                            name="water" // Ícone de troféu
+                                            size={20} // Tamanho do ícone
+                                            color="#00aaff" // Cor do ícone
+                                            style={{
+                                                textShadowColor: 'black', // Cor do contorno
+                                                textShadowOffset: { width: 5, height: 5 }, // Tamanho do contorno
+                                                textShadowRadius: 1, // Suaviza o contorno
+                                            }}
+                                        />
+                                    ) : null
+                                }
+                                {
+                                    point.type == "Banheiro" ? (
+                                        <IconFont
+                                            name="toilet" // Ícone de troféu
+                                            size={20} // Tamanho do ícone
+                                            color="#8c8c8c" // Cor do ícone
+                                            style={{
+                                                textShadowColor: 'black', // Cor do contorno
+                                                textShadowOffset: { width: 5, height: 5 }, // Tamanho do contorno
+                                                textShadowRadius: 1, // Suaviza o contorno
+                                            }}
+                                        />
+                                    ) : null
+                                }
+                                {
+                                    point.type == "Foto" ? (
+                                        <IconEntpo
+                                            name="camera" // Ícone de troféu
+                                            size={20} // Tamanho do ícone
+                                            color="#1eff00" // Cor do ícone
+                                            style={{
+                                                textShadowColor: 'black', // Cor do contorno
+                                                textShadowOffset: { width: 5, height: 5 }, // Tamanho do contorno
+                                                textShadowRadius: 1, // Suaviza o contorno
+                                            }}
+                                        />
+                                    ) : null
+                                }
                             </Marker>
-                        ))
+                        )
+                        )
                     ) : (
                         <Marker
                             coordinate={{
@@ -161,10 +226,10 @@ const MapCard = () => {
                             title={"Erro"}
                             description={"Falha em buscar os pontos!"}
                         >
-                            <Image
-                                source={require('../../../assets/icons/interrogacao1.png')} // Caminho para o ícone de interrogação
-                                style={{ width: 60, height: 60 }} // Aumentado o tamanho do ícone
-                                resizeMode="contain" // Mantém a proporção do ícone
+                            <Icon
+                                name="exclamation-triangle" // Ícone de erro (opcional)
+                                size={60} // Tamanho personalizado
+                                color="#ff6347" // Cor do ícone
                             />
                         </Marker>
                     )}
@@ -197,6 +262,3 @@ const styles = StyleSheet.create({
 });
 
 export default MapCard;
-
-/* 
-*/

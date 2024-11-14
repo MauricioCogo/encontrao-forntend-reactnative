@@ -62,12 +62,6 @@ const HelpView = () => {
                     </Text>
                 </View>
 
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Comissão do Evento</Text>
-                    <Text style={styles.sectionContent}>
-                        Nesta tela, você encontrará informações sobre a comissão do evento. Note que apenas avaliadores têm acesso a essa seção.
-                    </Text>
-                </View>
             </ScrollView>
         </Background>
     );

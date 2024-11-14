@@ -1,104 +1,76 @@
-import axios from 'axios'
+import axios from 'axios';
 
 const instance = axios.create({
-    baseURL: 'http://192.168.1.17:8080/',
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-    }
-})
+    baseURL: 'http://192.168.1.17:9090/',
+});
 
-const get = async (endpoint, headers, body) => {
+const get = async (endpoint) => {
+    try {
+        console.warn("BASE URL: ", instance.defaults.baseURL); // Mostra a baseURL
+        console.warn("ENDPOINT: ", endpoint);
+        console.warn("URL COMPLETO: ", instance.defaults.baseURL + endpoint);
+        const { data } = await instance.get(endpoint);
+        console.warn("Data:", data);
+        return data;
+    } catch (e) {
+        console.error(e);
+        return e;
+    }
+};
+
+const post = async (endpoint, body) => {
     try {
 
+        const { data } = await instance.post(endpoint, body);
+        const { success } = data;
+        if (!success) throw data;
+        return data;
+    } catch (e) {
+        console.error(e.message);
+        return e;
+    }
+};
+
+const patch = async (endpoint, body) => {
+    try {
+        const { data } = await instance.patch(endpoint, body);
+        const { success } = data;
+        if (!success) throw data;
+        return data;
+    } catch (e) {
+        console.error(e.message);
+        return e;
+    }
+};
+
+const put = async (endpoint, body) => {
+    try {
+        // Aqui você deve usar `getAuthConfig()` para pegar os cabeçalhos de autenticação
 
         console.warn("BASE URL: ", instance.defaults.baseURL); // Mostra a baseURL
         console.warn("ENDPOINT: ", endpoint);
         console.warn("URL COMPLETO: ", instance.defaults.baseURL + endpoint);
 
-        const { data } = await instance.get(endpoint)
+        // Enviando a requisição PUT corretamente, passando o endpoint, corpo e a configuração
+        const { data } = await instance.put(endpoint, body);
 
-        console.warn("data", data)
-        // const { success } = data
-        // console.warn(success);
-
-        // if (!success) {
-        //     throw data
-        // }
-
-        return data
+        return data;
     } catch (e) {
-        console.error(e)
-        return e
+        console.error("sdfs", e);
+        return e;
     }
-}
+};
 
-const post = async (endpoint, headers, body) => {
+const del = async (endpoint) => {
     try {
-        const { data } = await instance.post(endpoint, body, headers)
-
-        const { success } = data
-
-        if (!success) {
-            throw data
-        }
-
-        return data
+        const { data } = await instance.delete(endpoint);
+        const { success } = data;
+        if (!success) throw data;
+        return data;
     } catch (e) {
-        console.error(e.message)
-        return e
+        console.error(e);
+        return e;
     }
-}
+};
 
-const patch = async (endpoint, headers, body) => {
-    try {
-        const { data } = await instance.patch(endpoint, body, headers)
-
-        const { success } = data
-
-        if (!success) {
-            throw data
-        }
-
-        return data
-    } catch (e) {
-        console.error(e.message)
-        return e
-    }
-}
-
-const put = async (endpoint, headers, body) => {
-    try {
-        const { data } = await instance.put(endpoint, body, headers)
-
-        const { success } = data
-
-        if (!success) {
-            throw data
-        }
-
-        return data
-    } catch (e) {
-        console.error(e)
-        return e
-    }
-}
-
-const del = async (endpoint, headers, body) => {
-    try {
-        const { data } = await instance.delete(endpoint)
-
-        const { success } = data
-
-        if (!success) {
-            throw data
-        }
-
-        return data
-    } catch (e) {
-        console.error(e)
-        return e
-    }
-}
-
-export { get, post, put, del, patch }
+export { get, post, put, del, patch };

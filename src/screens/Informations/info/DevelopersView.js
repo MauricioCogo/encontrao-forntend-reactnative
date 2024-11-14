@@ -5,30 +5,32 @@ import Header from '../../../components/header';
 
 const developers = [
     {
-        name: 'João Silva',
-        role: 'Desenvolvedor Frontend',
-        email: 'joao.silva@example.com',
-        photo: 'https://via.placeholder.com/60', // Substitua com a URL real da imagem
+        name: 'Mauricio Carvalho Cogo',
+        role: 'Desenvolvedor',
+        email: 'mauricioccogo@gmail.com',
+        photo: 'Mauricio.png', // Substitua com a URL real da imagem
     },
     {
-        name: 'Maria Oliveira',
-        role: 'Desenvolvedora Backend',
-        email: 'maria.oliveira@example.com',
-        photo: 'https://via.placeholder.com/60', // Substitua com a URL real da imagem
+        name: 'Isaboo Acosta Alcântara',
+        role: 'Designer',
+        email: 'acostaisaboo@gmail.com',
+        photo: 'Isa.jpeg', // Substitua com a URL real da imagem
     },
     {
-        name: 'Pedro Santos',
-        role: 'Designer de Interface',
-        email: 'pedro.santos@example.com',
-        photo: 'https://via.placeholder.com/60', // Substitua com a URL real da imagem
-    },
-    {
-        name: 'Ana Lima',
-        role: 'Designer de Experiência',
-        email: 'ana.lima@example.com',
-        photo: 'https://via.placeholder.com/60', // Substitua com a URL real da imagem
+        name: 'Eduardo Rafael Miranda Feitoza',
+        role: 'Coordenador',
+        email: 'eduardo.rafael.feitoza@gmail.com',
+        photo: 'feitoza.png', // Substitua com a URL real da imagem
     },
 ];
+
+// Mapeamento de imagens locais
+const imageMap = {
+    'Mauricio.png': require('../../../../assets/Mauricio.jpg'),
+    'Isa.jpeg': require('../../../../assets/Isa.jpeg'),
+    'feitoza.png': require('../../../../assets/feitoza.png'),
+    // Adicione mais imagens locais conforme necessário
+};
 
 function DevelopersView() {
     return (
@@ -37,63 +39,66 @@ function DevelopersView() {
             <ScrollView>
                 <View style={styles.container}>
                     <Text style={styles.title}>Créditos dos Desenvolvedores</Text>
-                    {developers.map((dev, index) => (
-                        <View key={index} style={styles.developerContainer}>
-                            <Image source={{ uri: dev.photo }} style={styles.photo} />
-                            <View style={styles.info}>
-                                <Text style={styles.name}>{dev.name}</Text>
-                                <Text style={styles.role}>{dev.role}</Text>
-                                <Text style={styles.email}>{dev.email}</Text>
+                    {developers.map((dev, index) => {
+                        const imageSource = imageMap[dev.photo] || { uri: dev.photo };
+                        return (
+                            <View key={index} style={styles.developerContainer}>
+                                <Image source={imageSource} style={styles.photo} />
+                                <View style={styles.info}>
+                                    <Text style={styles.name}>{dev.name}</Text>
+                                    <Text style={styles.role}>{dev.role}</Text>
+                                    <Text style={styles.email}>{dev.email}</Text>
+                                </View>
                             </View>
-                        </View>
-                    ))}
+                        );
+                    })}
                     <Text style={styles.subtitle}>Agradecimentos Especiais</Text>
                     <Text style={styles.text}>
                         Agradecemos a todos que contribuíram com suas ideias e feedbacks para o desenvolvimento deste aplicativo.
                     </Text>
                 </View>
             </ScrollView>
-        </Background >
+        </Background>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
-        paddingHorizontal: 10,  // Ajuste horizontal
-        paddingVertical: 10,    // Ajuste vertical
-        marginVertical: 10,     // Espaçamento externo
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+        marginVertical: 10,
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginBottom: 20,       // Espaçamento inferior do título
+        marginBottom: 20,
     },
     developerContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 20,       // Espaçamento entre os blocos de desenvolvedores
-        padding: 10,            // Ajuste de padding interno para espaçamento uniforme
+        marginBottom: 20,
+        padding: 10,
     },
     photo: {
         width: 60,
         height: 60,
         borderRadius: 30,
-        marginRight: 15,        // Espaçamento à direita da imagem
+        marginRight: 15,
     },
     info: {
         flex: 1,
-        paddingLeft: 5,         // Espaçamento interno à esquerda do bloco de informações
+        paddingLeft: 5,
     },
     name: {
         fontSize: 18,
         fontWeight: 'bold',
-        marginBottom: 5,        // Espaçamento inferior do nome
+        marginBottom: 5,
     },
     role: {
         fontSize: 16,
-        marginBottom: 5,        // Espaçamento inferior do cargo
+        marginBottom: 5,
     },
     email: {
         fontSize: 14,
@@ -102,13 +107,12 @@ const styles = StyleSheet.create({
     subtitle: {
         fontSize: 18,
         fontWeight: 'bold',
-        marginVertical: 15,     // Espaçamento entre subtítulos
+        marginVertical: 15,
     },
     text: {
         fontSize: 16,
-        marginBottom: 10,       // Espaçamento entre parágrafos de texto
+        marginBottom: 10,
     },
 });
-
 
 export default DevelopersView;
