@@ -21,7 +21,6 @@ const getCompetitionTeam = async (id) => {
 const getCompetitionTeams = async () => {
     try {
         const body = await get(`competitions-teams`);
-        console.warn("teste");
 
         return body;
     } catch (e) {

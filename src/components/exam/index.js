@@ -17,7 +17,6 @@ const ExamCard = ({ id, name, modality, description, date, commission, local, fe
     const [expanded, setExpanded] = useState(false);
     const formattedDate = format(parseISO(date), 'dd/MM/yyyy HH:mm');
     const navigation = useNavigation(); // Obter o objeto de navegação
-    console.warn(fecult);
 
 
     const handleToggle = () => {
@@ -65,22 +64,6 @@ const ExamCard = ({ id, name, modality, description, date, commission, local, fe
                                 />
                             </TouchableOpacity>
                         </>
-                    )}
-                    {commission && (
-                        <TouchableOpacity style={styles.button}>
-                            <Button
-                                onClick={() => alerta('Com')} // Passando 'Com' para navegar para a tela de grades
-                                label={"Comissão"}
-                                styles={{
-                                    alignItems: 'center',
-                                    backgroundColor: '#ff7470',
-                                    width: 270,
-                                    height: 45,
-                                    borderRadius: 20,
-                                    color: '#000',
-                                }}
-                            />
-                        </TouchableOpacity>
                     )}
                 </View>
             )}

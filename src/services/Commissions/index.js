@@ -21,7 +21,6 @@ const getCommission = async (id) => {
 const getCommissions = async () => {
     try {
         const body = await get(`commissions`);
-        console.warn("teste");
 
         return body;
     } catch (e) {

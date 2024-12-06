@@ -12,7 +12,6 @@ const PresentationsView = () => {
         const fetchPresentations = async () => {
             try {
                 const fetchedPresentations = await getPresentationsWithCampus();
-                console.warn("ASADF", fetchedPresentations);
                 setPresentations(fetchedPresentations);
             } catch (error) {
                 console.warn("Falha ao carregar as apresentações", error);

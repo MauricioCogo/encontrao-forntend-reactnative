@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    baseURL: 'http://192.168.1.17:9090/',
+    baseURL: 'http://192.168.1.12:8080/',
 });
 
 const get = async (endpoint) => {

@@ -14,7 +14,6 @@ const ParticipantsView = ({ route, navigation }) => {
         const fetchedParticipants = async () => {
             try {
                 const fetchedParticipants = await getParticipants(competitionId);
-                console.warn("Teste");
                 console.warn(fetchedParticipants);
                 setParticipants(fetchedParticipants);
             } catch (error) {
